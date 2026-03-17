@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import BookForm
 from .models import Book
 
@@ -28,3 +28,19 @@ def book_create(request):
         'form': form
     }
     return render(request, 'books/book_form.html', context)
+
+
+@login_required
+def book_toggle(request, pk):
+    book = get_object_or_404(Book, pk=pk, user=request.user)
+    book.status = not book.status
+    book.save()
+    return redirect('book_list')
+
+@login_required
+def book_delete(request, pk):
+    book = get_object_or_404(Book, pk=pk, user=request.user)
+    if request.method == 'POST':
+        book.delete()
+        return redirect('book_list')
+    return redirect('book_list')
