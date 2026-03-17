@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-xl mx-auto">
+    <div class="bg-white border border-slate-200 p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-black text-slate-900">Новый трофей</h2>
+            <p class="text-slate-400 font-medium mt-2">Добавьте книгу в свою коллекцию</p>
+        </div>
+
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- Стилизация полей Django Form через селекторы Tailwind -->
+            <div class="space-y-4">
+                {% for field in form %}
+                    <div class="flex flex-col">
+                        <label class="text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">{{ field.label }}</label>
+                        <div class="relative">
+                            {{ field }}
+                        </div>
+                        {% if field.errors %}
+                            <p class="text-red-500 text-[10px] font-bold mt-1 ml-1 uppercase">{{ field.errors.as_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <button type="submit" class="w-full py-4 bg-slate-900 text-white font-black rounded-2xl hover:bg-emerald-600 transition-all transform hover:scale-[1.02] active:scale-95 shadow-lg shadow-slate-200">
+                СОХРАНИТЬ КНИГУ
+            </button>
+        </form>
+
+        <div class="mt-8 text-center">
+            <a href="{% url 'book_list' %}" class="text-sm font-bold text-slate-300 hover:text-slate-600 transition underline decoration-2 underline-offset-4">Вернуться в библиотеку</a>
+        </div>
+    </div>
+</div>
+
+<!-- Маленький лайфхак: стилизуем стандартные инпуты Django -->
+<style>
+    input, select, textarea {
+        width: 100%;
+        padding: 0.875rem 1.25rem;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+        outline: none;
+        border-color: #10b981;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    }
+</style>
+{% endblock %}
